@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-      "dev": "anvil --chain-id 1337",
+      "dev": "(sleep 5 && bun run deploy) & anvil --chain-id 1337",
       "build": "forge build --sizes",
       "lint": "forge fmt",
       "test": "forge test -vvv",

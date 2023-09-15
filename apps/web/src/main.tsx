@@ -1,13 +1,13 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { CSSReset, ChakraProvider } from '@chakra-ui/react'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { CSSReset, ChakraProvider } from "@chakra-ui/react";
 import { WagmiConfig } from "wagmi";
-import { chains, wagmiConfig } from "../wagmi";
-import App from './App.tsx'
+import { chains, wagmiConfig } from "./wagmi";
+import App from "./App.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ChakraProvider>
       <CSSReset />
@@ -18,4 +18,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </WagmiConfig>
     </ChakraProvider>
   </React.StrictMode>,
-)
+);
