@@ -3,11 +3,12 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-      "dev": "(sleep 5 && bun run deploy) & anvil --chain-id 1337",
+      "dev": "(sleep 1 && bun run deploy) & anvil --chain-id 1337",
       "build": "forge build --sizes",
       "lint": "forge fmt",
       "test": "forge test -vvv",
-      "deploy": "forge script script/Counter.s.sol --rpc-url http://localhost:8545 --broadcast --mnemonics \"test test test test test test test test test test test junk\" --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+      "deploy": "cd ../.. && forge script pkg/contracts/script/Counter.s.sol --rpc-url http://localhost:8545 --broadcast --mnemonics \"test test test test test test test test test test test junk\" --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 && cd pkg/contracts",
+      "postinstall": "forge install"
     }
   }
   

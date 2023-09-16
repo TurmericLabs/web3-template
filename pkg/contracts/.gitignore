@@ -2,7 +2,6 @@
 cache/
 out/
 broadcast/
-lib/
 
 # Docs
 docs/
