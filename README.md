@@ -7,13 +7,17 @@ This template provides a minimal setup to get Foundry woriking with Vite and Rea
 - Chackra UI for styling.
 - WAGMI and Rainbow Kit libraries for interacting with the wallet.
 
+
+## Prerequisites
+
+- [Bun](https://bun.sh/) - A fast all-in-one Javascript/Typescript runtime.
+- [Foundry](https://getfoundry.sh/) - Modular toolkit for Ethereum application development.
+
 ## Getting Started
 
 1. Clone this repository and `cd` into it
 2. Install dependencies with `bun install`
-3. Start the development blockchain with `bun chain`
-4. Deploy the contracts with `bun run deploy`
-5. Start the development server with `bun dev`
+5. Start the development chain and hot-reload frontend with `bun dev`
 
 ## Expanding the ESLint configuration
 
