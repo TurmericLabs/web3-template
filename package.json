@@ -12,7 +12,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "turbo run postinstall"
+    "postinstall": "turbo run postinstall",
+    "send-eth": "cast send --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --value 1ether"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",

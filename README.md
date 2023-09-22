@@ -17,7 +17,9 @@ This template provides a minimal setup to get Foundry woriking with Vite and Rea
 
 1. Clone this repository and `cd` into it
 2. Install dependencies with `bun install`
-5. Start the development chain and hot-reload frontend with `bun dev`
+3. Start the development chain and hot-reload frontend with `bun dev`
+4. Optional: `bun send-eth <your-address>` to send 1 ETH to your account in the development chain
+5. Open `http://localhost:3000` in your browser and connect to the wallet
 
 ## Expanding the ESLint configuration
 
