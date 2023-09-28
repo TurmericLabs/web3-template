@@ -7,7 +7,7 @@
       "build": "forge build --sizes",
       "lint": "forge fmt",
       "test": "forge test -vvv",
-      "deploy": "cd ../.. && forge script pkg/contracts/script/Counter.s.sol --rpc-url http://localhost:8545 --broadcast --mnemonics \"test test test test test test test test test test test junk\" --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 && cd pkg/contracts",
+      "deploy": "cd ../.. && forge script pkg/contracts/script/Y.s.sol:YScript --rpc-url http://localhost:8545 --broadcast --mnemonics \"test test test test test test test test test test test junk\" --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 && cd pkg/contracts",
       "postinstall": "forge install"
     }
   }

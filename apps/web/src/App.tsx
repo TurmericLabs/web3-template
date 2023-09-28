@@ -1,104 +1,128 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Link,
-  Image,
   Text,
-  useColorModeValue,
   Flex,
+  Input,
+  VStack,
+  HStack,
+  Image,
 } from "@chakra-ui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import {
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
+  useAccount,
+  usePublicClient,
+  useWalletClient,
 } from "wagmi";
-import { parseAbi } from "viem";
+import { parseAbi, parseAbiItem } from "viem";
+import { formatTimeAgo } from "./lib/time";
+import UserName from "./components/UserName";
+
+import logo from './assets/logo.svg';
+import UserAvatar from "./components/UserAvatar";
+
+type Post = {
+  content: string;
+  timestamp: bigint;
+  author: `0x${string}`;
+};
 
 function App() {
-  const {
-    data: count,
-    isError,
-    isLoading,
-  } = useContractRead({
-    address: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
-    functionName: "number",
-    watch: true,
-    abi: parseAbi(["function number() public view returns (uint256)"]),
-  }) as { data: bigint | undefined; isError: boolean; isLoading: boolean };
 
-  const { config } = usePrepareContractWrite({
-    address: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
-    functionName: "increment",
-    abi: parseAbi(["function increment() public"]),
-  });
+  const publicClient = usePublicClient()
 
-  const { write: increment } = useContractWrite(config);
-  const shadowColor = useColorModeValue("#646cffaa", "#61dafbaa");
-  const textColor = useColorModeValue("#888", "#ddd");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  useEffect(() => {
+    let unwatch = () => {}
+    publicClient.getLogs({  
+      address: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+      event: parseAbiItem('event PostCreated(uint256 index, string content, uint256 timestamp, address author)'),
+      fromBlock: 0n,
+    })
+    .then(logs => logs.map(log => ({content: log.args.content!, timestamp: log.args.timestamp!, author: log.args.author!})))
+    .then(posts => setPosts(posts))
+    .then(() => {
+      unwatch = publicClient.watchEvent({
+        address: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+        event: parseAbiItem('event PostCreated(uint256 index, string content, uint256 timestamp, address author)'),
+        onLogs: (logs) => {
+          setPosts((posts) => {
+            const _posts = [...posts];
+            logs.forEach((log) => {
+              _posts[Number(log.args.index)] = {content: log.args.content!, timestamp: log.args.timestamp!, author: log.args.author!}
+            });
+            return _posts;
+          })
+        }
+      })
+    })
+    return () => {
+      unwatch()
+    }
+  }, []);
+
+  const reversedPosts = [...posts].reverse()
+
+  const { address } = useAccount()
+  const { data: walletClient } = useWalletClient()
+
+  const postMessage = async function () {
+    if (!address || !walletClient) return
+    const { request } = await publicClient.simulateContract({
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      functionName: "post",
+      args: [inputValue],
+      abi: parseAbi(["function post(string memory _content) public"]),
+    })
+    await walletClient.writeContract({...request})
+  }
 
   return (
     <>
-      <Flex
+    <Flex
         justify="space-between"
         align="center"
         p="1rem"
         boxShadow="md"
-        bg="blue.500"
-      >
-        <Text color="white" mr="1rem" fontSize="2xl" fontWeight="bold">
-          Your dApp Name
-        </Text>
+        bg="blue.400"  // Custom Twitter blue color, ensure this is defined in your theme.
+    >
+        <Image src={logo} alt="Y" width="32px" />
         <ConnectButton />
-      </Flex>
-      <Box maxW="1280px" m="0 auto" p="2rem" textAlign="center">
-        <Flex justifyContent={"center"} my="4">
-          <Link href="https://vitejs.dev" isExternal>
-            <Image
-              src={viteLogo}
-              alt="Vite logo"
-              h="6em"
-              p="1.5em"
-              transition="filter 300ms"
-              _hover={{ filter: `drop-shadow(0 0 1em ${shadowColor})` }}
-            />
-          </Link>
-          <Link href="https://react.dev" isExternal>
-            <Image
-              src={reactLogo}
-              alt="React logo"
-              h="6em"
-              p="1.5em"
-              transition="filter 300ms"
-              _hover={{ filter: `drop-shadow(0 0 1em ${shadowColor})` }}
-            />
-          </Link>
-        </Flex>
-        <Text fontSize="2xl">Foundry + Bun + Turbo + Vite + React + TS</Text>
+    </Flex>
+    <Box maxW="1280px" m="0 auto" p="2rem" textAlign="center">
+        <Flex justifyContent={'center'}><Image src={logo} width={32} /></Flex>
         <Box p="2em" borderRadius="md" boxShadow="md">
-          <Button
-            colorScheme="blue"
-            onClick={() => (increment ? increment() : null)}
-          >
-            {isLoading ? (
-              <Text>Loading...</Text>
-            ) : isError ? (
-              <Text>Error</Text>
-            ) : (
-              <Text>Count is {count?.toString()}</Text>
-            )}
-          </Button>
-          <Text mt="4">
-            Edit <Text as="code">src/App.tsx</Text> and save to test HMR
-          </Text>
+            <HStack spacing={4}>
+                <Input autoFocus placeholder="What's happening?" value={inputValue} onChange={handleChange} flex="1" />
+                <Button colorScheme="blue" onClick={() => postMessage ? postMessage() : null}>Tweet</Button>
+            </HStack>
+            
+            {reversedPosts.map((post) => (
+              <HStack
+                key={post.content}
+                mt="4" p="4" bg="blue.50" borderRadius="md" spacing={4}
+                alignItems="flex-start"
+                >
+                  <UserAvatar address={post.author} />
+                  <VStack alignItems="flex-start">
+    <HStack spacing={2}>
+        <Text fontWeight="bold"><UserName address={post.author} /></Text>
+        <Text fontSize="sm" color="gray.500">{formatTimeAgo(post.timestamp)}</Text>
+    </HStack>
+    <Text>{post.content}</Text>
+</VStack>
+              </HStack>
+            ))}
         </Box>
-        <Text mt="4" color={textColor}>
-          Click on the Vite and React logos to learn more
-        </Text>
-      </Box>
-    </>
+    </Box>
+</>
   );
 }
 
