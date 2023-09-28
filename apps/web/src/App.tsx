@@ -21,6 +21,11 @@ import UserName from "./components/UserName";
 
 import logo from './assets/logo.svg';
 import UserAvatar from "./components/UserAvatar";
+import SubscribeButton from "./components/SubscribeButton";
+
+import latestBroadcast from '../../../broadcast/Y.s.sol/80001/run-latest.json'
+
+const contractAddress = latestBroadcast.transactions[0].contractAddress as `0x${string}`;
 
 type Post = {
   content: string;
@@ -42,7 +47,7 @@ function App() {
   useEffect(() => {
     let unwatch = () => {}
     publicClient.getLogs({  
-      address: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+      address: contractAddress,
       event: parseAbiItem('event PostCreated(uint256 index, string content, uint256 timestamp, address author)'),
       fromBlock: 0n,
     })
@@ -50,7 +55,7 @@ function App() {
     .then(posts => setPosts(posts))
     .then(() => {
       unwatch = publicClient.watchEvent({
-        address: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
+        address: contractAddress,
         event: parseAbiItem('event PostCreated(uint256 index, string content, uint256 timestamp, address author)'),
         onLogs: (logs) => {
           setPosts((posts) => {
@@ -76,7 +81,7 @@ function App() {
   const postMessage = async function () {
     if (!address || !walletClient) return
     const { request } = await publicClient.simulateContract({
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: contractAddress,
       functionName: "post",
       args: [inputValue],
       abi: parseAbi(["function post(string memory _content) public"]),
@@ -91,30 +96,33 @@ function App() {
         align="center"
         p="1rem"
         boxShadow="md"
-        bg="blue.400"  // Custom Twitter blue color, ensure this is defined in your theme.
+        bg="twitter.400"
     >
         <Image src={logo} alt="Y" width="32px" />
+        <HStack spacing={4}>
         <ConnectButton />
+        <SubscribeButton />
+        </HStack>
     </Flex>
     <Box maxW="1280px" m="0 auto" p="2rem" textAlign="center">
         <Flex justifyContent={'center'}><Image src={logo} width={32} /></Flex>
         <Box p="2em" borderRadius="md" boxShadow="md">
             <HStack spacing={4}>
                 <Input autoFocus placeholder="What's happening?" value={inputValue} onChange={handleChange} flex="1" />
-                <Button colorScheme="blue" onClick={() => postMessage ? postMessage() : null}>Tweet</Button>
+                <Button colorScheme="twitter" onClick={() => postMessage ? postMessage() : null}>Tweet</Button>
             </HStack>
             
             {reversedPosts.map((post) => (
               <HStack
                 key={post.content}
-                mt="4" p="4" bg="blue.50" borderRadius="md" spacing={4}
+                mt="4" p="4" bg="twitter.50" borderRadius="md" spacing={4}
                 alignItems="flex-start"
                 >
                   <UserAvatar address={post.author} />
                   <VStack alignItems="flex-start">
     <HStack spacing={2}>
         <Text fontWeight="bold"><UserName address={post.author} /></Text>
-        <Text fontSize="sm" color="gray.500">{formatTimeAgo(post.timestamp)}</Text>
+        <Text fontSize="sm" color="twitter.400">{formatTimeAgo(post.timestamp)}</Text>
     </HStack>
     <Text>{post.content}</Text>
 </VStack>
