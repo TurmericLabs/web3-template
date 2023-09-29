@@ -22,10 +22,7 @@ import UserName from "./components/UserName";
 import logo from './assets/logo.svg';
 import UserAvatar from "./components/UserAvatar";
 import SubscribeButton from "./components/SubscribeButton";
-
-import latestBroadcast from '../../../broadcast/Y.s.sol/80001/run-latest.json'
-
-const contractAddress = latestBroadcast.transactions[0].contractAddress as `0x${string}`;
+import { contractAddress } from "./wagmi";
 
 type Post = {
   content: string;
@@ -85,6 +82,7 @@ function App() {
       functionName: "post",
       args: [inputValue],
       abi: parseAbi(["function post(string memory _content) public"]),
+      account: address,
     })
     await walletClient.writeContract({...request})
   }

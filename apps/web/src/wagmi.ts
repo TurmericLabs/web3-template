@@ -5,6 +5,8 @@ import { polygonMumbai } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
+import latestBroadcast from '../../../broadcast/Y.s.sol/80001/run-latest.json'
+
 const mumbaiLocalhost = {...polygonMumbai, 
   rpcUrls: {
     public: { http: ['http://localhost:8545'] },
@@ -33,3 +35,5 @@ export const wagmiConfig = createConfig({
   connectors,
   publicClient,
 });
+
+export const contractAddress = latestBroadcast.transactions[0].contractAddress as `0x${string}`;

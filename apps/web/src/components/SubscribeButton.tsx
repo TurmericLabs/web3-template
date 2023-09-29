@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react"
 import SuperfluidWidget, { WidgetProps } from "@superfluid-finance/widget"
+import { contractAddress } from "../wagmi"
 
 const data: WidgetProps = {
   "productDetails": {
@@ -10,7 +11,7 @@ const data: WidgetProps = {
   "paymentDetails": {
     "paymentOptions": [
       {
-        "receiverAddress": "0xF26Ce9749f29E61c25d0333bCE2301CB2DFd3a22",
+        "receiverAddress": contractAddress,
         "chainId": 80001,
         "superToken": {
           "address": "0x42bb40bf79730451b11f6de1cba222f17b87afd7"

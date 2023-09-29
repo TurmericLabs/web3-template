@@ -6,7 +6,7 @@
       "dev": "(sleep 3 && bun run deploy) & anvil --fork-url https://polygon-mumbai.g.alchemy.com/v2/hBGXpU1Ef5qFGdaZvdEL_MDJuKrzy771 --chain-id 80001",
       "build": "forge build --sizes",
       "lint": "forge fmt",
-      "test": "forge test -vvv",
+      "test": "forge test -vvv --fork-url https://polygon-mumbai.g.alchemy.com/v2/hBGXpU1Ef5qFGdaZvdEL_MDJuKrzy771",
       "deploy": "cd ../.. && forge script pkg/contracts/script/Y.s.sol:YScript --rpc-url http://localhost:8545 --broadcast --mnemonics \"test test test test test test test test test test test junk\" --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 && cd pkg/contracts",
       "deploy:mumbai": "cd ../.. && forge script pkg/contracts/script/Y.s.sol:YScript --rpc-url https://polygon-mumbai.g.alchemy.com/v2/hBGXpU1Ef5qFGdaZvdEL_MDJuKrzy771 --broadcast --mnemonics \"test test test test test test test test test test test junk\" --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 && cd pkg/contracts",
       "postinstall": "forge install"

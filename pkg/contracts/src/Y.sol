@@ -2,8 +2,9 @@
 pragma solidity ^0.8.13;
 
 import {StringUtils} from "./utils/StringUtils.sol";
+import {Subscribable} from "./utils/Subscribable.sol";
 
-contract Y {
+contract Y is Subscribable {
     using StringUtils for string;
 
     struct Post {
@@ -13,26 +14,33 @@ contract Y {
     }
 
     uint256 public index;
-    mapping(uint256 => Post) posts;
+    mapping(uint256 => Post) private _posts;
 
     event PostCreated(uint256 index, string content, uint256 timestamp, address author);
 
     error ContentIsEmpty();
     error ContentIsTooLong();
 
-    function post(string memory _content) public {
-        if (_content.strlen() == 0) {
+    constructor(
+        address host,
+        address cfa,
+        address acceptedToken,
+        int96 minFlowrate
+    ) Subscribable(host, cfa, acceptedToken, minFlowrate) {}
+
+    function post(string memory content) public onlySubscribers {
+        if (content.strlen() == 0) {
             revert ContentIsEmpty();
         }
-        if (_content.strlen() > 140) {
+        if (content.strlen() > 140) {
             revert ContentIsTooLong();
         }
-        posts[index] = Post(_content, block.timestamp, msg.sender);
-        emit PostCreated(index, _content, block.timestamp, msg.sender);
+        _posts[index] = Post(content, block.timestamp, msg.sender);
+        emit PostCreated(index, content, block.timestamp, msg.sender);
         index++;
     }
 
-    function getPost(uint256 _index) public view returns (Post memory) {
-        return posts[_index];
+    function getPost(uint256 i) public view returns (Post memory) {
+        return _posts[i];
     }
 }
