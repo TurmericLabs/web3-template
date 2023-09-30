@@ -21,7 +21,6 @@ import UserName from "./components/UserName";
 
 import logo from './assets/logo.svg';
 import UserAvatar from "./components/UserAvatar";
-import SubscribeButton from "./components/SubscribeButton";
 import { contractAddress } from "./wagmi";
 
 type Post = {
@@ -99,7 +98,6 @@ function App() {
         <Image src={logo} alt="Y" width="32px" />
         <HStack spacing={4}>
         <ConnectButton />
-        <SubscribeButton />
         </HStack>
     </Flex>
     <Box maxW="1280px" m="0 auto" p="2rem" textAlign="center">
@@ -116,14 +114,14 @@ function App() {
                 mt="4" p="4" bg="twitter.50" borderRadius="md" spacing={4}
                 alignItems="flex-start"
                 >
-                  <UserAvatar address={post.author} />
-                  <VStack alignItems="flex-start">
-    <HStack spacing={2}>
-        <Text fontWeight="bold"><UserName address={post.author} /></Text>
-        <Text fontSize="sm" color="twitter.400">{formatTimeAgo(post.timestamp)}</Text>
-    </HStack>
-    <Text>{post.content}</Text>
-</VStack>
+                <UserAvatar address={post.author} />
+                <VStack alignItems="flex-start">
+                  <HStack spacing={2}>
+                      <Text fontWeight="bold"><UserName address={post.author} /></Text>
+                      <Text fontSize="sm" color="twitter.400">{formatTimeAgo(post.timestamp)}</Text>
+                  </HStack>
+                  <Text>{post.content}</Text>
+                </VStack>
               </HStack>
             ))}
         </Box>

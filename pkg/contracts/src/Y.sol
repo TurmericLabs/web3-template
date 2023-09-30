@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import {StringUtils} from "./utils/StringUtils.sol";
 import {Subscribable} from "./utils/Subscribable.sol";
 
-contract Y is Subscribable {
+contract Y {
     using StringUtils for string;
 
     struct Post {
@@ -21,14 +21,7 @@ contract Y is Subscribable {
     error ContentIsEmpty();
     error ContentIsTooLong();
 
-    constructor(
-        address host,
-        address cfa,
-        address acceptedToken,
-        int96 minFlowrate
-    ) Subscribable(host, cfa, acceptedToken, minFlowrate) {}
-
-    function post(string memory content) public onlySubscribers {
+    function post(string memory content) public {
         if (content.strlen() == 0) {
             revert ContentIsEmpty();
         }

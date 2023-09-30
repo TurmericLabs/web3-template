@@ -12,11 +12,11 @@ contract YTest is Test {
     event PostCreated(uint256 index, string content, uint256 timestamp, address author);
 
     function setUp() public {
-        address host = 0xEB796bdb90fFA0f28255275e16936D25d3418603;
-        address cfa = 0x49e565Ed1bdc17F3d220f72DF0857C26FA83F873;
-        address acceptedToken = 0x42bb40bF79730451B11f6De1CbA222F17b87Afd7;
-        int96 flowrate = (9 * 10**18) / int96(31 days);
-        y = new Y(host, cfa, acceptedToken, flowrate);
+        // address host = 0xEB796bdb90fFA0f28255275e16936D25d3418603;
+        // address cfa = 0x49e565Ed1bdc17F3d220f72DF0857C26FA83F873;
+        // address acceptedToken = 0x42bb40bF79730451B11f6De1CbA222F17b87Afd7;
+        // int96 flowrate = (9 * 10**18) / int96(31 days);
+        y = new Y();
     }
 
     function test_Post() public {

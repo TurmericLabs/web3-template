@@ -5,8 +5,6 @@ import {IConstantFlowAgreementV1} from "superfluid/interfaces/agreements/IConsta
 import {ISuperToken} from "superfluid/interfaces/superfluid/ISuperToken.sol";
 import {SuperTokenV1Library} from "superfluid/apps/SuperTokenV1Library.sol";
 
-import {console2} from "forge-std/Test.sol";
-
 contract Subscribable {
     using SuperTokenV1Library for ISuperToken;
 
@@ -44,11 +42,6 @@ contract Subscribable {
 
     function isSubscribedTo(address sender, address recipient) public view returns (bool) {
         int96 flowrate = _acceptedToken.getFlowRate(sender, recipient);
-        console2.log("addr: %s", sender);
-        console2.log("recipient: %s", recipient);
-        console2.log("flowrate: %s", flowrate);
-        console2.log("minFlowrate: %s", _minFlowrate);
-        console2.log("isSubscribed: %s", flowrate > 0 && flowrate >= _minFlowrate);
         return flowrate > 0 && flowrate >= _minFlowrate;
     }
 }
