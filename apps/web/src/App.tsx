@@ -22,6 +22,7 @@ import UserName from "./components/UserName";
 import logo from './assets/logo.svg';
 import UserAvatar from "./components/UserAvatar";
 import { contractAddress } from "./wagmi";
+import SubscribeButton from "./components/SubscribeButton";
 
 type Post = {
   content: string;
@@ -98,6 +99,7 @@ function App() {
         <Image src={logo} alt="Y" width="32px" />
         <HStack spacing={4}>
         <ConnectButton />
+        <SubscribeButton />
         </HStack>
     </Flex>
     <Box maxW="1280px" m="0 auto" p="2rem" textAlign="center">
