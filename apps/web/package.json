@@ -13,12 +13,13 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@rainbow-me/rainbowkit": "^1.0.11",
+    "@rainbow-me/rainbowkit": "beta",
+    "@tanstack/react-query": "^5.17.9",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^1.10.13",
-    "wagmi": "^1.4.1"
+    "viem": "^2.1.1",
+    "wagmi": "^2.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

@@ -11,33 +11,43 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import {
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
+  useWriteContract,
+  useReadContract,
+  useBlockNumber,
+  useSimulateContract,
 } from "wagmi";
 import { parseAbi } from "viem";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 function App() {
+  const queryClient = useQueryClient();
+
+  const { data: blockNumber } = useBlockNumber({ watch: true });
   const {
     data: count,
     isError,
     isLoading,
-  } = useContractRead({
+    queryKey,
+  } = useReadContract({
     address: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
     functionName: "number",
-    watch: true,
     abi: parseAbi(["function number() public view returns (uint256)"]),
-  }) as { data: bigint | undefined; isError: boolean; isLoading: boolean };
+  }) 
 
-  const { config } = usePrepareContractWrite({
+  const { data } = useSimulateContract({
     address: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
     functionName: "increment",
     abi: parseAbi(["function increment() public"]),
   });
 
-  const { write: increment } = useContractWrite(config);
+  const { writeContract } = useWriteContract();
   const shadowColor = useColorModeValue("#646cffaa", "#61dafbaa");
   const textColor = useColorModeValue("#888", "#ddd");
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey });
+  }, [blockNumber, queryClient]);
 
   return (
     <>
@@ -80,7 +90,8 @@ function App() {
         <Box p="2em" borderRadius="md" boxShadow="md">
           <Button
             colorScheme="blue"
-            onClick={() => (increment ? increment() : null)}
+            disabled={!Boolean(data?.request)}
+            onClick={() => data?.request ? writeContract(data.request) : null}
           >
             {isLoading ? (
               <Text>Loading...</Text>
@@ -89,7 +100,7 @@ function App() {
             ) : (
               <Text>Count is {count?.toString()}</Text>
             )}
-          </Button>
+            </Button>
           <Text mt="4">
             Edit <Text as="code">src/App.tsx</Text> and save to test HMR
           </Text>

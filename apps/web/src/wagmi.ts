@@ -1,28 +1,12 @@
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig } from "wagmi";
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { localhost } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
+import { QueryClient } from "@tanstack/react-query";
 
-export const { chains, publicClient } = configureChains(
-  [localhost],
-  import.meta.env.ALCHEMY_ID
-    ? [
-        alchemyProvider({ apiKey: import.meta.env.ALCHEMY_ID }),
-        publicProvider(),
-      ]
-    : [publicProvider()],
-);
+export const queryClient = new QueryClient();
 
-const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
+export const wagmiConfig = getDefaultConfig({
+  appName: "web3-template by TurmericLabs",
   projectId: "YOUR_PROJECT_ID",
-  chains,
-});
-
-export const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
+  chains: [localhost],
 });
