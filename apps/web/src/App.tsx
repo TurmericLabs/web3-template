@@ -86,7 +86,7 @@ function App() {
             />
           </Link>
         </Flex>
-        <Text fontSize="2xl">Foundry + Bun + Turbo + Vite + React + TS</Text>
+        <Text fontSize="2xl">Hardhat + Viem + Bun + Turbo + Vite + React + TS</Text>
         <Box p="2em" borderRadius="md" boxShadow="md">
           <Button
             colorScheme="blue"

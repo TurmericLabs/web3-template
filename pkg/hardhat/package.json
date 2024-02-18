@@ -1,0 +1,14 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-viem": "^2.0.0",
+    "hardhat": "^2.20.1"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "dev": "(sleep 1 && bun run deploy) & hardhat node",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "send-eth": "hardhat run scripts/send-eth.ts --network localhost",
+    "test": "hardhat test"
+  }
+}

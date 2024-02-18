@@ -1,6 +1,6 @@
 # Turmeric Template
 
-This template provides a minimal setup to get Foundry woriking with Vite and React. It includes:
+This template provides a minimal setup to get Hardhat Viem woriking with Vite and React. It includes:
 
 - React working in Vite with HMR and some ESLint rules.
 - A basic setup for TypeScript.
@@ -11,14 +11,13 @@ This template provides a minimal setup to get Foundry woriking with Vite and Rea
 ## Prerequisites
 
 - [Bun](https://bun.sh/) - A fast all-in-one Javascript/Typescript runtime.
-- [Foundry](https://getfoundry.sh/) - Modular toolkit for Ethereum application development.
 
 ## Getting Started
 
 1. Clone this repository and `cd` into it
 2. Install dependencies with `bun install`
 3. Start the development chain and hot-reload frontend with `bun dev`
-4. Optional: `bun send-eth <your-address>` to send 1 ETH to your account in the development chain
+4. Optional: `RECIPIENT_ADDRESS=<your-address> bun send-eth` to send 1 ETH to your account in the development chain
 5. Open `http://localhost:3000` in your browser and connect to the wallet
 
 ## Expanding the ESLint configuration
